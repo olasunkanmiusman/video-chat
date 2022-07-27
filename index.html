@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <script src="https://unpkg.com/peerjs@1.4.5/dist/peerjs.min.js"></script>
+
+
+<script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="menu">
+        <p>Your ID:</p>
+        <p id="uuid"></p>
+        <input type="text" placeholder="Peer id" id="input" />
+        <button onclick="callUser();">Connect</button>
+      </div>
+      <div id="pickUp" style="display: none;">
+        <label for="">You Have a Call </label>
+        <button   id="pick">Pick Call</button>
+        <button   id="reject">reject Call</button>
+      </div>
+
+      <div id="live">
+        <video id="remote-video"></video>
+        <video id="local-video" muted="true"></video>
+        <button id="end-call" onclick="endCall()">End Call</button>
+      </div>
+      <audio id="myaudio" loop >
+        <source src="Ringtone.mp3" type="audio/mp3">
+      </audio>
+</body>
+</html>
