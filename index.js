@@ -1,5 +1,6 @@
  const peer = new Peer(); 
-var currentcall;
+var currentcall; 
+var pickupcall = false;
 peer.on('open',function(id){
     document.getElementById("uuid").textContent = id;
 });
@@ -20,17 +21,41 @@ video: true, audio: true
     document.getElementById("local-video").srcObject = stream;
     document.getElementById("local-video").play();
 
+// Play call tone
+var oncall = document.getElementById("Oncall");
+oncall.play();
+
+
+ 
+
     // make the call
     const call = peer.call(peerID,stream);
     call.on("stream",(stream) =>  {document.getElementById("remote-video").srcObject = stream;
+    var oncall = document.getElementById("Oncall");
+oncall.pause();
 document.getElementById("remote-video").play();
 }
     );
     call.on("data", (stream) => {
         document.querySelector("#remote-video").srcObject = stream;
       });
-      
+
+      var StopCall = setTimeout(() => {
+        if((peer.on('call'))){
+          var oncall = document.getElementById("Oncall");
+oncall.pause();
+          clearTimeout(StopCall);
+        }
+        else{
+          
+          call.emit("calloff");
+          call.close();
+        location.reload();
+        }
+      },10000);
+       
       call.on("error", (err) => {
+        location.reload();
         console.log(err);
       });
 
@@ -50,7 +75,6 @@ document.getElementById("remote-video").play();
 
 
  
-var pickupcall = false;
 
 //  answer call
 peer.on("call", (call) => {
@@ -115,6 +139,7 @@ function endCall() {
     // Go back to the menu
     document.querySelector("#menu").style.display = "block";
     document.querySelector("#live").style.display = "none";
+    
   // If there is no current call, return
     if (!currentcall) return;
   // Close the call, and reset the function
